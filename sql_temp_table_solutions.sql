@@ -35,12 +35,10 @@ GROUP BY p.customer_id;
 -- The CTE should include the customer's name, email address, rental count, and total amount paid.
 -- Next, using the CTE, create the query to generate the final customer summary report, which should include: customer name, email, 
 -- rental_count, total_paid and average_payment_per_rental, this last column is a derived column from total_paid and rental_count.
-# WITH avg_pay_per_rent AS(
-	# SELECT (total_paid / rental_count) AS average_payment_per_rental
-	# FROM payment_summary
-# )
 
-SELECT ps.*,
-	(total_paid / rental_count) AS average_payment_per_rental
-	#(SELECT average_payment_per_rental FROM avg_pay_per_rent)
-FROM payment_summary AS ps;
+WITH customer_report AS (
+  SELECT name, email, rental_count, total_paid FROM payment_summary
+)
+
+SELECT *, (total_paid / rental_count) AS average_payment_per_rental
+FROM customer_report;
